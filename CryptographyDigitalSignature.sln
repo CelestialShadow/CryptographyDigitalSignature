@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33712.159
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptographyDigitalSignature", "CryptographyDigitalSignature\CryptographyDigitalSignature.csproj", "{44B92541-1E5D-44E9-9640-AA3DE0AA0C7C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{44B92541-1E5D-44E9-9640-AA3DE0AA0C7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44B92541-1E5D-44E9-9640-AA3DE0AA0C7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44B92541-1E5D-44E9-9640-AA3DE0AA0C7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44B92541-1E5D-44E9-9640-AA3DE0AA0C7C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A5FB1FF8-4176-455E-B039-0346B4458973}
+	EndGlobalSection
+EndGlobal
