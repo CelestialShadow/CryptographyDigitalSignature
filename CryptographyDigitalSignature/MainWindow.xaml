@@ -12,7 +12,7 @@
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
             <Button Content="Generate Keys" Click="GenerateKeys_Click" Margin="0,0,5,0"/>
-            <Button Content="Save Keys" Click="SaveKeys_Click"/>
+            <Button Content="Save Keys" Click="SaveKeys_Click" Margin="0,0,5,0"/>
             <Button x:Name="button" Content="Load Keys" Click="LoadKeys_Click" Margin="0,0,5,0"/>
             <Button Content="Load Public Key" Click="LoadPublicKey_Click"/>
         </StackPanel>
@@ -20,7 +20,7 @@
         <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Center">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="File Path:" VerticalAlignment="Center"/>
-                <TextBox x:Name="FileToSign" Width="400" Margin="5" VerticalAlignment="Center"/>
+                <TextBox IsReadOnly="True" x:Name="FileToSign" Width="400" Margin="5" VerticalAlignment="Center"/>
                 <Button Content="Browse" Click="BrowseFileToSign_Click" Margin="5"/>
             </StackPanel>
 

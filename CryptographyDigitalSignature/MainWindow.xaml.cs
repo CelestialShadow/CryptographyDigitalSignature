@@ -8,21 +8,27 @@ namespace CryptographyDigitalSignature
 {
     public partial class MainWindow : Window
     {
-        private readonly string PublicKeyFilePath = "publickey.xml";
-        private readonly string PrivateKeyFilePath = "privatekey.xml";
-        private readonly string SignatureFilePath = "signature.rsa";
+        private const string KeyFolderPath = "Keys";
+        private const string SignatureFolderPath = "Signatures";
+
+        private readonly string PublicKeyFilePath = Path.Combine(KeyFolderPath, "publickey.xml");
+        private readonly string PrivateKeyFilePath = Path.Combine(KeyFolderPath, "privatekey.xml");
+        private readonly string SignatureFilePath = Path.Combine(SignatureFolderPath, "signature.rsa");
 
         private RSACryptoServiceProvider Rsa = new();
 
         public MainWindow()
         {
             InitializeComponent();
+
+            Directory.CreateDirectory(KeyFolderPath);
+            Directory.CreateDirectory(SignatureFolderPath);
         }
 
         private void GenerateKeys_Click(object sender, RoutedEventArgs e)
         {
             Rsa = new();
-            Log("Keys Generated");
+            Log("Keys Generated in Program(not your PC)");
         }
 
         private void SaveKeys_Click(object sender, RoutedEventArgs e)
@@ -31,7 +37,7 @@ namespace CryptographyDigitalSignature
             {
                 File.WriteAllText(PublicKeyFilePath, Rsa.ToXmlString(false));
                 File.WriteAllText(PrivateKeyFilePath, Rsa.ToXmlString(true));
-                Log("Keys have been saved");
+                Log("Keys have been saved in " + Path.GetFullPath(KeyFolderPath));
             }
             catch (Exception exception)
             {
@@ -46,6 +52,7 @@ namespace CryptographyDigitalSignature
                 if (File.Exists(PrivateKeyFilePath) && File.Exists(PublicKeyFilePath))
                 {
                     Rsa.FromXmlString(File.ReadAllText(PrivateKeyFilePath));
+                    Log("Keys have been loaded from: " + Path.GetFullPath(KeyFolderPath));
                 }
                 else
                 {
@@ -65,7 +72,7 @@ namespace CryptographyDigitalSignature
                 if (File.Exists(PublicKeyFilePath))
                 {
                     Rsa.FromXmlString(File.ReadAllText(PublicKeyFilePath));
-                    Log("Public key have been loaded");
+                    Log("Public key has been loaded");
                 }
                 else
                 {
@@ -87,11 +94,13 @@ namespace CryptographyDigitalSignature
                 Log("Filepath to encryption has been set");
             }
         }
+
         private enum AlgorithmName : int
         {
             SHA256,
             MD5
         }
+
         private void SignFile_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -112,19 +121,19 @@ namespace CryptographyDigitalSignature
                 if (hashAlgorithm == (int)AlgorithmName.SHA256)
                 {
                     hashAlgorithmName = HashAlgorithmName.SHA256;
-                    var sha256 = SHA256.Create();
+                    using var sha256 = SHA256.Create();
                     hash = sha256.ComputeHash(fileBytes);
                 }
                 else
                 {
                     hashAlgorithmName = HashAlgorithmName.MD5;
-                    var md5 = MD5.Create();
+                    using var md5 = MD5.Create();
                     hash = md5.ComputeHash(fileBytes);
                 }
 
                 byte[] signature = Rsa.SignHash(hash, hashAlgorithmName, RSASignaturePadding.Pkcs1);
                 File.WriteAllBytes(SignatureFilePath, signature);
-                Log("File has been signed and signature saved in: " + SignatureFilePath);
+                Log("File has been signed and signature saved in: " + Path.GetFullPath(SignatureFilePath));
             }
             catch (Exception exception)
             {
@@ -149,13 +158,13 @@ namespace CryptographyDigitalSignature
                 if (hashAlgorithm == (int)AlgorithmName.SHA256)
                 {
                     hashAlgorithmName = HashAlgorithmName.SHA256;
-                    var sha256 = SHA256.Create();
+                    using var sha256 = SHA256.Create();
                     hash = sha256.ComputeHash(fileBytes);
                 }
                 else
                 {
                     hashAlgorithmName = HashAlgorithmName.MD5;
-                    var md5 = MD5.Create();
+                    using var md5 = MD5.Create();
                     hash = md5.ComputeHash(fileBytes);
                 }
                 byte[] signature = File.ReadAllBytes(SignatureFilePath);
@@ -177,7 +186,7 @@ namespace CryptographyDigitalSignature
 
         private void Log(string message)
         {
-            LogTextBox.AppendText($"${DateTime.Now}- {message}\n");
+            LogTextBox.AppendText($"{DateTime.Now}- {message}\n");
             LogTextBox.ScrollToEnd();
         }
     }
